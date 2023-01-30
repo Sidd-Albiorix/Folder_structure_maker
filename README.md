@@ -4,6 +4,9 @@ Folder structure maker onboarding assignment
 ### Folder "frontend" containes front end code(react)
 ### Folder "backend" containes back end code(node)
 
+# Node api's are hosted on render.com
+https://folder-structure-maker-api.onrender.com/getFolderStructure.
+
 ## Follow this steps to run project in local.
 1. Go in each folder and run "npm i"
 2. Go in "backend" folder and run "node index.js" => It'll start express server on "5000" port
