@@ -1,4 +1,3 @@
-const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -18,7 +17,6 @@ app.get('/getFolderStructure', (req, res) => {
             if (strData) {
                 fileData = JSON.parse(strData);
 
-                console.log(fileData);
                 res.send({ isSuccess: true, data: fileData });
             }
             else {

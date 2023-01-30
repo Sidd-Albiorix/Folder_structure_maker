@@ -1,72 +1,20 @@
-import { getSpaceUntilMaxLength } from '@testing-library/user-event/dist/utils';
 import React, { useEffect, useState } from 'react'
 import './Main.css'
 
 export default function Main() {
+    // Folder structure sample
+    // { name: 'Abc', isRootFolder: true },
+    // { name: 'Zxc', parentFolder: 'Abc' },
+    // { name: 'A123', parentFolder: 'Abc', isSubFolder: true },
+    // { name: 'B123', parentFolder: 'A123', isSubFolder: true },
+    // { name: '123', isRootFolder: true }
     const [rootFolderStructure, setRootFolderStructure] = useState([
-        // { name: 'Abc', isRootFolder: true },
-        // { name: 'Zxc', parentFolder: 'Abc' },
-        // { name: 'Qwe', isRootFolder: true },
-        // { name: 'Mno', parentFolder: 'Qwe' },
-        // { name: 'Pqr', parentFolder: 'Qwe', isSubFolder: true },
-        // { name: 'Pqr 123', parentFolder: 'Pqr' },
-        // { name: 'A123', parentFolder: 'Qwe', isSubFolder: true },
-        // { name: 'B123', parentFolder: 'A123', isSubFolder: true },
-        // { name: 'AAA', parentFolder: 'B123', isSubFolder: true },
-        // { name: 'ABC', parentFolder: 'B123' },
-        // { name: 'BBB', parentFolder: 'AAA', isSubFolder: true },
-        // { name: 'CCC', parentFolder: 'BBB', isSubFolder: true },
-        // { name: 'C123', parentFolder: 'BBB', },
-        // { name: 'C123', parentFolder: 'CCC' },
-        // { name: '123', isRootFolder: true }
     ])
 
     const [counter, setCounter] = useState(0);
-
-    //     { 'A123': [] },
-    //     { 'B123': [{ name: 'file 1' }] },
-    //     { 'Abc': [{ name: 'file 1' }, { name: 'file 2' }] },
-    //     {
-    //         'Mno': [
-    //             { name: 'file 1' }, { name: 'file 2' },
-    //             {
-    //                 'SubFolder1': [{ name: 'SubFolder1 file 1' }, { name: 'SubFolder1 file 2' },
-    //                 { 'InnerFolder': [{ name: 'InnerFolder file 1' }, { name: 'InnerFolder file 2' }] }]
-    //             }]
-    //     },
-    //     {
-    //         'Qwe': [{ name: 'file 1' }, { name: 'file 2' }, { name: 'file 3' },
-    //         {
-    //             'SubFolder1': [{ name: 'SubFolder1 file 1' }, { name: 'SubFolder1 file 2' },
-    //             { 'InnerFolder': [{ name: 'InnerFolder file 1' }, { name: 'InnerFolder file 2' }] }]
-    //         }]
-    //     },
-    //     {
-    //         'Last': [{ name: 'file 1' }, { name: 'file 2' }, { name: 'file 3' },
-    //         {
-    //             'A': [{ name: 'A file 1' },
-    //             { 'B': [{ name: 'B file 1' }, { 'C': [{ name: 'C file 1' }, { 'D': [{ name: 'D file 1' }] }] }] }]
-    //         }]
-    //     }
-    // ]);
-
-    // let test = [
-    //     { name: 'Abc', isRootFolder: true },
-    //     { name: 'Qwe', isRootFolder: true },
-    //     { name: '123', isRootFolder: true },
-    //     { name: 'Zxc', parentFolder: 'Abc' },
-    //     { name: 'Mno', parentFolder: 'Qwe' },
-    //     { name: 'Pqr', parentFolder: 'Qwe' },
-    //     { name: 'A123', parentFolder: 'Qwe', isSubFolder: true },
-    //     { name: 'B123', parentFolder: 'A123' },
-    //     { name: 'AAA', parentFolder: 'B123', isSubFolder: true },
-    //     { name: 'BBB', parentFolder: 'AAA', isSubFolder: true },
-    //     { name: 'CCC', parentFolder: 'CCC', isSubFolder: true },
-    //     { name: 'C123', parentFolder: 'CCC' }
-    // ]
-
     const [openAddRootFolderInput, setOpenAddRootFolderInput] = useState(false)
 
+    //fetch initial structure from backend
     useEffect(() => {
         fetch('http://localhost:5000/getFolderStructure')
             .then(res => res.json())
@@ -86,6 +34,7 @@ export default function Main() {
             })
     }, [])
 
+    //To update folder structure data
     const updateBackEnd = (data) => {
         fetch('http://localhost:5000/addUpdateFolderStructure',
             {
@@ -152,6 +101,7 @@ export default function Main() {
             updateBackEnd(filteredData)
         }
 
+        //selects file type(file/folder)
         const fileSelection = (fileType) => {
             setAddFileOrFolderDivState(true)
             setSelectedFileType(fileType)
@@ -192,6 +142,7 @@ export default function Main() {
         )
     }
 
+    //Shows div to add file/folder
     const AddFileOrFolderDiv = ({ opsType }) => {
         return (
             <div className='addRootFolderDiv'>
@@ -206,31 +157,9 @@ export default function Main() {
 
     //Render whole folder structure
     const RenderFolderStructure = () => {
-
+        //render childern items
         const PopulateChildrenItems = ({ parentFolder, parentFolderId }) => {
-            let subItems = rootFolderStructure.filter((obj, index) => obj.parentFolderId == String(parentFolderId))
             return (
-                // subItems.length > 0 &&
-                // <ul>
-                //     {
-                //         subItems.map((item, index) => (
-                //             <li key={index}>
-                //                 <span className='subItems'>
-                //                     {item.name}
-                //                     {
-                //                         !item.isSubFolder ?
-                //                             <CommonFolderControlBtns objectItemIndex={index} isSubFile={true} />
-                //                             :
-                //                             <>
-                //                                 <CommonFolderControlBtns objectItemIndex={index} />
-                //                                 <PopulateChildrenItems parentFolder={item.name} parentFolderId={item.id} />
-                //                             </>
-                //                     }
-                //                 </span>
-                //             </li>
-                //         ))
-                //     }
-                // </ul>
                 rootFolderStructure.map(obj => (
                     obj.parentFolderId == String(parentFolderId) && obj.id != String(parentFolderId) &&
                     <ul>
