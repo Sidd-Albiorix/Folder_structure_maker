@@ -1,0 +1,39 @@
+.headerh1 {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.contentWrapper {
+    width: fit-content;
+    text-align: left;
+}
+
+.addRootFolderBtn {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.addRootFolderDiv {
+    margin: 25px;
+}
+
+.addRootFolderDiv button,
+.folderBtnGrp button,
+.fileDelBtn buton {
+    margin: 0px 5px;
+}
+
+.rootFolders .folderBtnGrp,
+.subItems .folderBtnGrp {
+    display: none;
+}
+
+.rootFolders:hover .folderBtnGrp,
+.subItems:hover .folderBtnGrp {
+    display: inline-block;
+}
