@@ -16,7 +16,7 @@ export default function Main() {
 
     //fetch initial structure from backend
     useEffect(() => {
-        fetch('http://localhost:5000/getFolderStructure')
+        fetch(process.env.REACT_APP_API_URL_HOSTED + '/getFolderStructure')
             .then(res => res.json())
             .then(res => {
                 if (res.isSuccess) {
@@ -36,7 +36,7 @@ export default function Main() {
 
     //To update folder structure data
     const updateBackEnd = (data) => {
-        fetch('http://localhost:5000/addUpdateFolderStructure',
+        fetch(process.env.REACT_APP_API_URL_HOSTED + '/addUpdateFolderStructure',
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
